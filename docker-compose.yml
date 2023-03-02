@@ -1,0 +1,26 @@
+ 
+version: '3.3'
+
+services:
+  smarthomebackend:
+    build: https://token:@github.com/Rehatech22-23/SmartHomeBackend.git
+    ports:
+      - "9000:9000"
+    container_name: app
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/snacky
+      - SPRING_DATASOURCE_USERNAME=compose-postgres
+      - SPRING_DATASOURCE_PASSWORD=compose-postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+  db:
+    image: 'postgres:15-bullseye'
+    container_name: db
+    ports:
+      - 5432:5432
+    environment:
+      - SPRING_JPA_DATABASE=POSTGRESQL
+      - POSTGRES_USER=compose-postgres
+      - POSTGRES_PASSWORD=compose-postgres
+      - POSTGRES_DB=snacky

@@ -1,12 +1,12 @@
- 
 version: '3.3'
 
 services:
   smarthomebackend:
-    build: https://token:@github.com/Rehatech22-23/SmartHomeBackend.git
+    build: https://github.com/Rehatech22-23/SmartHomeBackend.git#v1.0
     ports:
       - "9000:9000"
     container_name: app
+    restart: always
     depends_on:
       - db
     environment:
@@ -14,9 +14,16 @@ services:
       - SPRING_DATASOURCE_USERNAME=compose-postgres
       - SPRING_DATASOURCE_PASSWORD=compose-postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_SHOW_SQL=false
+      - HOMEE_DEVICE='Paulmann%20Lampe={"name":"Paulmann", "icon":"light"}|Philips%20%20Hue={"name":"PhilipsHue","icon":"light"}|homee={"name":"homee","icon":"controller"}
+      - TZ=Europe/Berlin
+  
   db:
     image: 'postgres:15-bullseye'
     container_name: db
+    restart: always
+    volumes:
+      - /home/rehatech/SmartHomeDB:/var/lib/postgresql/data
     ports:
       - 5432:5432
     environment:
@@ -24,3 +31,4 @@ services:
       - POSTGRES_USER=compose-postgres
       - POSTGRES_PASSWORD=compose-postgres
       - POSTGRES_DB=snacky
+      - TZ=Europe/Berlin
